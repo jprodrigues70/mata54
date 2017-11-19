@@ -78,8 +78,9 @@
           } else {
             i = m
           }
-          c = c + ("\r\nParada do while:\r\ni = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
         }
+        stop = (!(x > A[i] && x <= A[f]))? "\r\nParada do while e obtenção do resultado: \r\n": "";
+        c = c + (stop + "i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
         document.getElementById("bpi_comparison").value = c;
         return (A[i] == x)? i: -1;
       }
@@ -97,18 +98,20 @@
         var c = "", m, n = A.length, i = 0, f = n - 1;
 
         while (i <= f) {
-          c = c + ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
           m = Math.round((i + f) / 2);
           if (A[m] == x) {
+            c = c + ("\r\nObtenção do resultado: \r\ni = " + i + ", f = " + f + ": " + i + " <= " + f + "?; x == meio\r\n")
             document.getElementById("bb_comparison").value = c;
             return m;
           } else if (x < A[m]) {
+            c = c + ("i = " + i + ", f = " + f + ": " + i + " <= " + f + "?; x < meio\r\n")
             f = m - 1;
           } else {
+            c = c + ("i = " + i + ", f = " + f + ": " + i + " <= " + f + "?; x > meio\r\n")
             i = m + 1;
           }
         }
-        c = c + ("\r\nParada do while:\r\ni = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
+        c = c + ("\r\nParada do while:\r\ni = " + i + ", f = " + f + ": " + i + " <= " + f + "?\r\n")
         document.getElementById("bb_comparison").value = c;
         return -1;
       }
