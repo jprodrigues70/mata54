@@ -12,9 +12,9 @@
           <h1>Busca por interpolação</h1>
           <form id="bpi" class="gt-form">
             <label for="array">Insira os inteiros do seu arquivo separados por vírgula</label>
-            <input type="text" name="array" id="array">
+            <input type="text" name="array" id="array" value="1, 7, 10, 20, 21, 30, 35, 40, 45, 61">
             <label for="x">Insira o inteiro que está procurando</label>
-            <input type="number" name="x" id="x">
+            <input type="number" name="x" id="x" value="21">
             <button class="btn success" type="submit" name="button">Buscar</button>
           </form>
         </div>
@@ -35,9 +35,9 @@
           <h1>Busca Binária</h1>
           <form id="bb" class="gt-form">
             <label for="array">Insira os inteiros do seu arquivo separados por vírgula</label>
-            <input type="text" name="array" id="array">
+            <input type="text" name="array" id="array" value="1, 7, 10, 20, 21, 30, 35, 40, 45, 61">
             <label for="x">Insira o inteiro que está procurando</label>
-            <input type="number" name="x" id="x">
+            <input type="number" name="x" id="x" value="21">
             <button class="btn success" type="submit" name="button">Buscar</button>
           </form>
         </div>
@@ -64,12 +64,12 @@
       });
 
       function interpolation(A, x) {
-        var c, m, n = A.length,
+        var c = "", m, n = A.length,
         i = 0
         f = n -1;
 
-        c = ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n");
         while (x > A[i] && x <= A[f]) {
+          c = ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n");
           m = Math.round(i + ((x - A[i])/(A[f] - A[i])) * (f - 1));
           if (x > A[m]) {
             i = m + 1;
@@ -78,7 +78,7 @@
           } else {
             i = m
           }
-          c = c + ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
+          c = c + ("\r\nParada do while:\r\ni = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
         }
         document.getElementById("bpi_comparison").value = c;
         return (A[i] == x)? i: -1;
@@ -94,10 +94,10 @@
       });
 
       function binarySearch(A, x) {
-        var c, m, n = A.length, i = 0, f = n - 1;
+        var c = "", m, n = A.length, i = 0, f = n - 1;
 
-        c = ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n");
         while (i <= f) {
+          c = c + ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
           m = Math.round((i + f) / 2);
           if (A[m] == x) {
             document.getElementById("bb_comparison").value = c;
@@ -107,8 +107,8 @@
           } else {
             i = m + 1;
           }
-          c = c + ("i = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
         }
+        c = c + ("\r\nParada do while:\r\ni = " + i + ", f = " + f + ": " + x + " > " + A[i] + " && " + x + " <= " + A[f] + "?\r\n")
         document.getElementById("bb_comparison").value = c;
         return -1;
       }
