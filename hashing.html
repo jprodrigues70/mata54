@@ -102,6 +102,7 @@
     <script type="text/javascript">
       document.getElementById("lp").addEventListener("submit", function(e) {
         e.preventDefault();
+        var access = 0,
         size = parseInt(document.getElementById("lp_size").value), c = "";
         var A = new Array(size);
         array = document.getElementById("lp_array").value.replace(" ", "").split(",").map(function(x) { return parseInt(x) });
@@ -114,18 +115,21 @@
         array.forEach(function(i) {
           for(count = 0, f = h(lp_h, h_v, i);;) {
             if (!A[f]){
+              access += (count + 1)
               A[f] = i, count = 0; break
             }
             count++, s = h(lp_h, h_v, i) + count, f = h("m", size, s)
           }
         });
-        
+
         for (i = 0 ; i < size; i++) c += i + " => " + (A[i] || "-") + "\r\n";
+        c += "\r\nAcessos: " + (access) + "/" + array.length + " = " + (access/array.length);
         document.getElementById("lp_result").value = c;
       })
 
       document.getElementById("dh").addEventListener("submit", function(e) {
         e.preventDefault();
+        var access = 0,
         size = parseInt(document.getElementById("size").value), c = "";
         var A = new Array(size)
 
@@ -144,6 +148,7 @@
         array.forEach(function(o) {
           for(count = 0, f = h(h1, h1_v, o);;) {
             if (!A[f]) {
+              access += (count + 1)
               A[f] = o, count = 0; break
             }
             count++, s = h(h1, h1_v, o) + count * h(h2, h2_v, o), f = h("m", size, s)
@@ -151,6 +156,7 @@
         });
 
         for (i = 0; i < size; i++) c = c + (i + " => " + (A[i] || "-") + "\r\n")
+        c += "\r\nAcessos: " + (access) + "/" + array.length + " = " + (access/array.length);
 
         document.getElementById("dh_result").value = c;
       });
