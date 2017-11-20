@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Interpolação</title>
+    <link rel="stylesheet" href="nm/gaintime/css/gaintime.min.css">
+  </head>
+  <body>
+    <header class="gt-top-menu xs-left">
+      <label class="menu-toggle">
+        <svg viewBox="0 0 24 24">
+          <path fill="#333" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"></path>
+        </svg>
+      </label>
+      <nav>
+        <ul>
+          <a href="."><li>Início</li></a>
+          <a href="hash"><li>Hash</li></a>
+          <a href="hashing"><li class="active">Hash Calc</li></a>
+        </ul>
+      </nav>
+    </header>
+    <section>
+      <div class="row flex-box">
+        <div class="xs-12 sm-6">
+          <h1>Linear Probing</h1>
+          <form id="lp" class="gt-form">
+            <label for="lp_size">Tamanho</label>
+            <input type="number" name="size" id="lp_size" value="11">
+            <label for="array">Inteiros do seu arquivo separados por vírgula na ordem de inserção</label>
+            <input type="text" name="array" id="lp_array" value="15,16,26,40,21,27">
+            <label for="h1">Função de hash</label>
+            <div class="row flex-box">
+              <select style="max-width: 35%" name="h1" id="lp_h">
+                <option value="m" selected>mod</option>
+                <option value="b">/ (chão)</option>
+                <option value="t">/ (teto)</option>
+              </select>
+              <input type="number" name="h1_v" id="lp_h_v" value="11" style="max-width: 35%; margin-left: 5px">
+            </div>
+            <label for="lp_h_p">h1 Personalizado</label>
+            <small>Aqui você vai escrever em javascript, e só é permitido a variável x. mod é %. Ex: (x % 13). Ex: (1 + (x % 10))</small>
+            <input type="text" name="lp_h_p" id="lp_h_p" value="">
+            <button class="btn success" type="submit" name="button">Buscar</button>
+          </form>
+        </div>
+        <div class="xs-12 sm-6">
+          <h2>Resultado</h2>
+          <form class="gt-form" action="index.html" method="post">
+            <label for="lp_result">Tabela</label>
+            <textarea id="lp_result" name="name" rows="20" disabled></textarea>
+          </form>
+        </div>
+      </div>
+    </section>
+    <section>
+      <div class="row flex-box">
+        <div class="xs-12 sm-6">
+          <h1>Hash Duplo</h1>
+          <form id="dh" class="gt-form">
+            <label for="size">Tamanho</label>
+            <input type="number" name="size" id="size" value="11">
+            <label for="array">Inteiros do seu arquivo separados por vírgula na ordem de inserção</label>
+            <input type="text" name="array" id="array" value="15,16,26,40,21,27">
+            <label for="h1">Função de hash 1</label>
+            <div class="row flex-box">
+              <select style="max-width: 35%" name="h1" id="h1">
+                <option value="m" selected>mod</option>
+                <option value="b">/ (chão)</option>
+                <option value="t">/ (teto)</option>
+              </select>
+              <input type="number" name="h1_v" id="h1_v" value="11" style="max-width: 35%; margin-left: 5px">
+            </div>
+            <label for="h2">Função de hash 2</label>
+            <div class="row flex-box">
+              <select style="max-width: 35%" name="h2" id="h2">
+                <option value="m">mod</option>
+                <option value="b" selected>/ (chão)</option>
+                <option value="t">/ (teto)</option>
+              </select>
+              <input type="number" name="h2_v" id="h2_v" value="11" style="max-width: 35%; margin-left: 5px">
+            </div>
+            <label for="h1_p">h1 Personalizado</label>
+            <small>Aqui você vai escrever em javascript, e só é permitido a variável x. mod é %. Ex: (x % 13). Ex: (1 + (x % 10))</small>
+            <input type="text" name="h1_p" id="h1_p" value="">
+            <label for="h2_p">h2 Personalizado</label>
+            <small>Aqui você vai escrever em javascript, e só é permitido a variável x. mod é %. Ex: (x % 13). Ex: (1 + (x % 10))</small>
+            <input type="text" name="h2_p" id="h2_p" value="">
+            <button class="btn success" type="submit" name="button">Buscar</button>
+          </form>
+        </div>
+        <div class="xs-12 sm-6">
+          <h2>Resultado</h2>
+          <form class="gt-form" action="index.html" method="post">
+            <label for="dh_result">Tabela</label>
+            <textarea id="dh_result" name="name" rows="20" disabled></textarea>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <script type="text/javascript">
+      document.getElementById("lp").addEventListener("submit", function(e) {
+        e.preventDefault();
+        size = parseInt(document.getElementById("lp_size").value);
+        var A = new Array(size);
+        array = document.getElementById("lp_array").value.replace(" ", "").split(",").map(function(x) { return parseInt(x) });
+        lp_h = document.getElementById("lp_h").value
+        h_v = document.getElementById("lp_h_v").value
+        lp_h_p = document.getElementById("lp_h_p").value
+
+        if (lp_h_p != "") lp_h = lp_h_p
+        array.forEach(function(x) {
+          count = 0;
+          f = (h(lp_h, h_v, x));
+          while (1) {
+            if (!A[f]) {
+              A[f] = x;
+              count = 0;
+              break;
+            } else {
+              count++;
+              s = (h(lp_h, h_v, x) + count)
+              f = h("m", size, s);
+            }
+          }
+        })
+        c = "";
+        for (i = 0; i < size; i++) {
+          c = c + (i + " => " + (A[i] || "-") + "\r\n")
+        }
+        document.getElementById("lp_result").value = c;
+      })
+
+      var dh = document.getElementById("dh");
+      dh.addEventListener("submit", function(e) {
+        e.preventDefault();
+        size = parseInt(document.getElementById("size").value);
+        var A = new Array(size)
+
+        array = document.getElementById("array").value.replace(" ", "").split(",").map(function(x) { return parseInt(x) });
+        h1 = document.getElementById("h1").value
+        h1_v = document.getElementById("h1_v").value
+
+        h2 = document.getElementById("h2").value
+        h2_v = document.getElementById("h2_v").value
+
+        h1_p = document.getElementById("h1_p").value
+        h2_p = document.getElementById("h2_p").value
+        if (h1_p != "") h1 = h1_p
+        if (h2_p != "") h2 = h2_p
+
+        array.forEach(function(x) {
+          count = 0;
+          f = (h(h1, h1_v, x));
+          while (1) {
+            if (!A[f]) {
+              A[f] = x;
+              count = 0;
+              break;
+            } else {
+              count++;
+              f2 = h(h2, h2_v, x);
+              s = h(h1, h1_v, x) + (count * f2)
+              f = h("m", size, s);
+            }
+          }
+        })
+        c = "";
+        for (i = 0; i < size; i++) {
+          c = c + (i + " => " + (A[i] || "-") + "\r\n")
+        }
+        document.getElementById("dh_result").value = c;
+      });
+
+      function h(f, y, x) {
+        y = parseInt(y);
+        x = parseInt(x);
+
+        if (f == "m") return x % y;
+        else if (f == "b") return Math.floor(x / y);
+        else if (f == "t") return Math.round(x / y);
+        else {
+          a = new Function("x", "return " + f);
+          return Math.round(a(x));
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Interpolação</title>
+    <link rel="stylesheet" href="nm/gaintime/css/gaintime.min.css">
+  </head>
+  <body>
+    <header class="gt-top-menu xs-left">
+      <label class="menu-toggle">
+        <svg viewBox="0 0 24 24">
+          <path fill="#333" d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z"></path>
+        </svg>
+      </label>
+      <nav>
+        <ul>
+          <a href="."><li>Início</li></a>
+          <a href="hash"><li class="active">Hash</li></a>
+          <a href="hashing"><li>Hash Calc</li></a>
+        </ul>
+      </nav>
+    </header>
+    <section>
+      <h1>Hash</h1>
+
+      <h2>Endereçamento Direto (ED)</h2>
+      <p>É uma técnica simples que funciona bem quando o U universo de chaves é razoavelmente pequeno.</p>
+      <p>Cada elemento terá uma chave definida a partir do universo U = {0, 1, ..., m - 1}, onde m é razoavelmente pequeno. Não há dois elementos com a mesma chave.</p>
+      <p>Para representar o conjunto dinâmico, utilizamos uma tabela de endereço direto (TED) T[0 .. m - 1], na qual cada posição corresponde a uma chave do universo U. Se o conjunto não possui nenhum elemento para uma determinada chave k, então T[k]=NIL.</p>
+      <p>As operações de Search, Insert e Delete em uma TED são executadas em O(1)</p>
+      <p>O problema do endereçamento direto é que se o U for grande, o armazenamento de uma tabela T de tamanho |U| pode ser impraticável, ou impossível, pois consumiria muita memória, e poderia causar muito desperdício se o conjunto K de chaves realmente armazenadas for muito pequeno em relação a U.</p>
+
+
+      <h2>Tabelas hash</h2>
+      <p>Quando temos o problema apresentado em <b>Endereçamento direto</b>, uma tabela Hash exige menos espaço de armazenamento que uma TED.</p>
+      <p>Enquanto no ED a chave k é armazenada na posição k, no hash ele é armazenada em h(k), onde h é uma função hash que mapeia o universo U de chaves nas posições de uma tabela hasg T[0 .. m-1]. A finalidade de uma <b>h</b> é reduzir o intervali de índices de arranjos que precisam ser tratados. Passamos a manipular m valores e não |U| falores.</p>
+      <p>O lance é que na tabela hash podem acabar ocorrendo colisões, pois duas chaves podem resultar em hash na mesma posição. Existem técnicas para resolver o conflito causado por colisões, e para reduzir as chances de uma colisão ocorrer, mas é impossível evitar totalmente as colisões.</p>
+      <h3>Resolução de colisões por encadeamento</h3>
+      <p>Utiliza-se de listas ligadas para alocar todos elementos que efetuam hash para uma mesma posição. A posição i terá um ponteiro para o início da lista de elementos que efetuam hash para i, ou NIL caso não haja elemento.</p>
+      <p>Inserção em O(1) no pior caso.</p>
+
+      <h2>Endereçamento Aberto</h2>
+      <p>
+        No endereçamento aberto, todos os elementos estão armazenados na própria tabela hash.
+      </p>
+      <p>A vantagem do endereçamento aberto é que ele evita por completo o uso de ponteiros. Em lugar de seguir ponteiros, calculamos a sequência de posições a serem examinadas. A memória extra liberada por não se armazenarem os ponteiros, fornece à tabela hash um nº maior de posições para a mesma quantidade de memória, gerando potencialmente menor nº de colisões e recuperação mais rápida.</p>
+
+      <h3>Hash duplo</h3>
+      <p>O hash duplo é um dos melhores métodos para <b>endereçamento aberto</b>, porque as permutações tem características de permutações aleatórias.</p>
+    </section>
+  </body>
+</html>
