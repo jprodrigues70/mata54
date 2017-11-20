@@ -102,40 +102,31 @@
     <script type="text/javascript">
       document.getElementById("lp").addEventListener("submit", function(e) {
         e.preventDefault();
-        size = parseInt(document.getElementById("lp_size").value);
+        size = parseInt(document.getElementById("lp_size").value), c = "";
         var A = new Array(size);
         array = document.getElementById("lp_array").value.replace(" ", "").split(",").map(function(x) { return parseInt(x) });
         lp_h = document.getElementById("lp_h").value
         h_v = document.getElementById("lp_h_v").value
         lp_h_p = document.getElementById("lp_h_p").value
 
-        if (lp_h_p != "") lp_h = lp_h_p
-        array.forEach(function(x) {
-          count = 0;
-          f = (h(lp_h, h_v, x));
-          while (1) {
-            if (!A[f]) {
-              A[f] = x;
-              count = 0;
-              break;
-            } else {
-              count++;
-              s = (h(lp_h, h_v, x) + count)
-              f = h("m", size, s);
+        if (lp_h_p != ""){ lp_h = lp_h_p}
+
+        array.forEach(function(i) {
+          for(count = 0, f = h(lp_h, h_v, i);;) {
+            if (!A[f]){
+              A[f] = i, count = 0; break
             }
+            count++, s = h(lp_h, h_v, i) + count, f = h("m", size, s)
           }
-        })
-        c = "";
-        for (i = 0; i < size; i++) {
-          c = c + (i + " => " + (A[i] || "-") + "\r\n")
-        }
+        });
+        
+        for (i = 0 ; i < size; i++) c += i + " => " + (A[i] || "-") + "\r\n";
         document.getElementById("lp_result").value = c;
       })
 
-      var dh = document.getElementById("dh");
-      dh.addEventListener("submit", function(e) {
+      document.getElementById("dh").addEventListener("submit", function(e) {
         e.preventDefault();
-        size = parseInt(document.getElementById("size").value);
+        size = parseInt(document.getElementById("size").value), c = "";
         var A = new Array(size)
 
         array = document.getElementById("array").value.replace(" ", "").split(",").map(function(x) { return parseInt(x) });
@@ -150,26 +141,17 @@
         if (h1_p != "") h1 = h1_p
         if (h2_p != "") h2 = h2_p
 
-        array.forEach(function(x) {
-          count = 0;
-          f = (h(h1, h1_v, x));
-          while (1) {
+        array.forEach(function(o) {
+          for(count = 0, f = h(h1, h1_v, o);;) {
             if (!A[f]) {
-              A[f] = x;
-              count = 0;
-              break;
-            } else {
-              count++;
-              f2 = h(h2, h2_v, x);
-              s = h(h1, h1_v, x) + (count * f2)
-              f = h("m", size, s);
+              A[f] = o, count = 0; break
             }
+            count++, s = h(h1, h1_v, o) + count * h(h2, h2_v, o), f = h("m", size, s)
           }
-        })
-        c = "";
-        for (i = 0; i < size; i++) {
-          c = c + (i + " => " + (A[i] || "-") + "\r\n")
-        }
+        });
+
+        for (i = 0; i < size; i++) c = c + (i + " => " + (A[i] || "-") + "\r\n")
+
         document.getElementById("dh_result").value = c;
       });
 
