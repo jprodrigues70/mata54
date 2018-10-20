@@ -102,30 +102,50 @@
     <script type="text/javascript">
       document.getElementById("lp").addEventListener("submit", function(e) {
         e.preventDefault();
-        var access = 0,
         size = parseInt(document.getElementById("lp_size").value), c = "";
-        var A = new Array(size);
         array = document.getElementById("lp_array").value.replace(" ", "").split(",").map(function(x) { return parseInt(x) });
         lp_h = document.getElementById("lp_h").value
         h_v = document.getElementById("lp_h_v").value
         lp_h_p = document.getElementById("lp_h_p").value
 
         if (lp_h_p != ""){ lp_h = lp_h_p}
+        var r = linearProbing(size, array, h_v, lp_h);
+
+        for (i = 0 ; i < size; i++) c += i + " => " + (r.result[i] || "-") + "\r\n";
+        c += "\r\nAcessos: " + (r.access) + "/" + array.length + " = " + r.hits;
+        document.getElementById("lp_result").value = c;
+      });
+
+      function linearProbing(size, array, hash = 11, hash_function = 'm', tiebraker_function = 'm', tiebraker_hash = 11) {
+        var access = 0;
+        var reorder = new Array(size);
+        var c = [];
 
         array.forEach(function(i) {
-          for(count = 0, f = h(lp_h, h_v, i);;) {
-            if (!A[f]){
-              access += (count + 1)
-              A[f] = i, count = 0; break
+          for (count = 0, f = h(hash_function, hash, i);;) {
+            if (isNaN(f)) {
+              break;
             }
-            count++, s = h(lp_h, h_v, i) + count, f = h("m", size, s)
+            if (!reorder[f]) {
+              access = access + (count + 1);
+              reorder[f] = i, count = 0; break;
+            }
+            count = count + 1;
+            s = h(hash_function, hash, i) + count;
+
+            f = h(tiebraker_function, tiebraker_hash, s);
           }
         });
 
-        for (i = 0 ; i < size; i++) c += i + " => " + (A[i] || "-") + "\r\n";
-        c += "\r\nAcessos: " + (access) + "/" + array.length + " = " + (access/array.length);
-        document.getElementById("lp_result").value = c;
-      })
+        for (j = 0; j < size; j++) {
+          c.push(reorder[j] || null);
+        }
+        return {
+          access: access,
+          hits: access/array.length,
+          result: c
+        }
+      }
 
       document.getElementById("dh").addEventListener("submit", function(e) {
         e.preventDefault();
